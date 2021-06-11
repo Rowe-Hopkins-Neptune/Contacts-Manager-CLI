@@ -26,6 +26,17 @@ public class ContactsApp {
         }
     }
 
+    public static void welcome() {
+        System.out.println(" __          __  _                          ");
+        System.out.println(" \\ \\        / / | |                         ");
+        System.out.println("  \\ \\  /\\  / /__| | ___ ___  _ __ ___   ___ ");
+        System.out.println("   \\ \\/  \\/ / _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\");
+        System.out.println("    \\  /\\  /  __/ | (_| (_) | | | | | |  __/");
+        System.out.println("     \\/  \\/ \\___|_|\\___\\___/|_| |_| |_|\\___|");
+        System.out.println("");
+        System.out.println("To the contacts manager!");
+    }
+
     //Add new contact
     public static void addContact(String name, String number, Path path) {
         try {
@@ -84,6 +95,8 @@ public class ContactsApp {
 
     public static void main(String[] args) {
 
+        welcome();
+
         ContactsApp io = new ContactsApp();
 
         Path toOurDataPlace = Paths.get("src/contacts");
@@ -132,9 +145,11 @@ public class ContactsApp {
                 case 2:
                     System.out.print("Please enter a name:");
                     String name = scanner.nextLine();
-                    System.out.print("\nPlease enter number:");
-                    String number = scanner.next();
-                    Contacts contacts = new Contacts(name, number);
+                    System.out.print("\nPlease enter a 10 digit number with no special characters:");
+                    Long number = scanner.nextLong();
+                    String numberEdit = String.valueOf(number).replaceFirst("(\\d{3})(\\d{3})(\\d+)",
+                            "($1)-$2-$3");
+                    Contacts contacts = new Contacts(name, numberEdit);
                     addContact(contacts.getName(), contacts.getNumber(), toOurDataFile);
                     break;
                 case 3:
@@ -149,6 +164,7 @@ public class ContactsApp {
                     io.readFileAndOutput(toOurDataFile);
                     break;
                 case 5:
+                    System.out.println("Thank you and have a great day.");
                     break;
 
             }
