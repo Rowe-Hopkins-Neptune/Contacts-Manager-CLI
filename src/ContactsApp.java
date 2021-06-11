@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 public class ContactsApp {
 
+        //Print out contact
         public void readFileAndOutput(Path pathToFile) {
         List<String> currentList = new ArrayList<>();
         try {
@@ -17,21 +18,23 @@ public class ContactsApp {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-
+            System.out.println("Name\t| Number");
+            System.out.println("----------------------");
         for (String line : currentList) {
+
             System.out.println(line);
         }
     }
 
-
+        //Add new contact
     public static void addContact(String name, String number, Path path) {
         try{
-            Files.writeString(path,  name + " | " + number + "\n", StandardOpenOption.APPEND);
+            Files.writeString(path,  name + "\t| " + number + "\n", StandardOpenOption.APPEND);
         }catch (IOException ioe){
             ioe.printStackTrace();
         }
     }
-
+        //Search contact
     public static void searchContacts (String name, Path path) {
         List<String> currentList = new ArrayList<>();
         try {
@@ -47,6 +50,35 @@ public class ContactsApp {
             }
         }
     }
+    //Delete Contacts
+    public static void Delete(String name, Path path) {
+            Scanner sc = new Scanner(System.in);
+        List<String> currentList = new ArrayList<>();
+        try {
+            currentList = Files.readAllLines(path);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+        Iterator<String> listIterator = currentList.iterator();
+        while (listIterator.hasNext()) {
+            String contact = listIterator.next();
+            if (contact.contains(name)) {
+                System.out.printf("Are you sure you want to delete %s?\n", name);
+                String verify = sc.next();
+                if (verify.equals("y") || verify.equals("yes")) {
+                    listIterator.remove();
+                } else {
+                    break;
+                }
+            }
+        }
+        try{
+            Files.write(path, currentList);
+        }catch(IOException ioe){
+            ioe.printStackTrace();
+        }
+        }
+
 
 
     public static void main(String[] args) {
@@ -75,23 +107,29 @@ public class ContactsApp {
 //        }
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("1. View contacts.");
-        System.out.println("2. Add a new contact.");
-        System.out.println("3. Search a contact by name.");
-        System.out.println("4. Delete an existing contact.");
-        System.out.println("5. Exit.");
         int userInput;
+        //loop for menu
+       do {
+           System.out.println();
+           System.out.println("1. View contacts.");
+           System.out.println("2. Add a new contact.");
+           System.out.println("3. Search a contact by name.");
+           System.out.println("4. Delete an existing contact.");
+           System.out.println("5. Exit.");
+
+           //verification loop
         do {
             System.out.println("Enter an option (1, 2, 3, 4, 5):");
             userInput = scanner.nextInt();
         } while(userInput >5 || userInput <1);
         scanner.nextLine();
+        //Menu options
         switch(userInput){
             case 1:
                 io.readFileAndOutput(toOurDataFile);
                 break;
             case 2:
-                System.out.print("Please enter name:");
+                System.out.print("Please enter a name:");
                 String name = scanner.nextLine();
                 System.out.print("\nPlease enter number:");
                 String number = scanner.next();
@@ -99,16 +137,21 @@ public class ContactsApp {
                 addContact(contacts.getName(), contacts.getNumber(), toOurDataFile);
                 break;
             case 3:
-                System.out.print("Please enter name:");
+                System.out.print("Please enter a name:");
                 String searchName = scanner.nextLine();
                 searchContacts(searchName, toOurDataFile);
                 break;
             case 4:
-                //Delete();
+                System.out.println("Please enter a name");
+                String deleteName = scanner.next();
+                Delete(deleteName, toOurDataFile);
+                io.readFileAndOutput(toOurDataFile);
                 break;
             case 5:
                 break;
 
         }
+       }while(userInput != 5);
     }
+
 }

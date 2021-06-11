@@ -25,25 +25,6 @@ public class Contacts {
     public String getNumber() {
         return number;
     }
-        //Delete Contacts
-//    List<String> currentList = new ArrayList<>();
-//        try{
-//        currentList = Files.readAllLines(toOurDataFile);
-//    }catch(IOException ioe){
-//        ioe.printStackTrace();
-//    }
-//    Iterator<String> listIterator = currentList.iterator();
-//        while(listIterator.hasNext()) {
-//        String empress = listIterator.next();
-//        if(empress.equals("Galla Placidia")){
-//            listIterator.remove();
-//        }
-//    }
-//        try{
-//        Files.write(toOurDataFile, currentList);
-//    }catch(IOException ioe){
-//        ioe.printStackTrace();
-//    }
-//        io.readFileAndOutput(toOurDataFile);
-//}
+
+
 }
