@@ -3,10 +3,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ContactsApp {
 
@@ -18,11 +15,11 @@ public class ContactsApp {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-        System.out.println("Name\t| Number");
-        System.out.println("----------------------");
+        System.out.println("|\tName\t|\tNumber\t  |");
+        System.out.println("---------------------------");
         for (String line : currentList) {
 
-            System.out.println(line);
+            System.out.printf("|%.30s|\n",line);
         }
     }
 
@@ -40,7 +37,7 @@ public class ContactsApp {
     //Add new contact
     public static void addContact(String name, String number, Path path) {
         try {
-            Files.writeString(path, name + "\t| " + number + "\n", StandardOpenOption.APPEND);
+            Files.writeString(path, name + " | " + number + "\n", StandardOpenOption.APPEND);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -48,6 +45,7 @@ public class ContactsApp {
 
     //Search contact
     public static void searchContacts(String name, Path path) {
+        String nameLower = name.toLowerCase(Locale.ROOT);
         List<String> currentList = new ArrayList<>();
         try {
             currentList = Files.readAllLines(path);
@@ -57,7 +55,7 @@ public class ContactsApp {
         Iterator<String> listIterator = currentList.iterator();
         while (listIterator.hasNext()) {
             String contact = listIterator.next();
-            if (contact.contains(name)) {
+            if (contact.toLowerCase(Locale.ROOT).contains(nameLower)) {
                 System.out.println(contact);
             }
         }
@@ -75,8 +73,8 @@ public class ContactsApp {
         Iterator<String> listIterator = currentList.iterator();
         while (listIterator.hasNext()) {
             String contact = listIterator.next();
-            if (contact.contains(name)) {
-                System.out.printf("Are you sure you want to delete %s?\n", name);
+            if (contact.toLowerCase(Locale.ROOT).contains(name)) {
+                System.out.printf("Are you sure you want to delete %s?\n", contact);
                 String verify = sc.next();
                 if (verify.equals("y") || verify.equals("yes")) {
                     listIterator.remove();
@@ -151,6 +149,7 @@ public class ContactsApp {
                             "($1)-$2-$3");
                     Contacts contacts = new Contacts(name, numberEdit);
                     addContact(contacts.getName(), contacts.getNumber(), toOurDataFile);
+                    io.readFileAndOutput(toOurDataFile);
                     break;
                 case 3:
                     System.out.print("Please enter a name:");
