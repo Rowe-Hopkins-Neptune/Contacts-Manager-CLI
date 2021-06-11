@@ -15,11 +15,11 @@ public class ContactsApp {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-        System.out.println("|\tName\t|\tNumber\t  |");
-        System.out.println("---------------------------");
+        System.out.println("|\t\tName\t\t |\t\tNumber\t |");
+        System.out.println("--------------------------------------");
         for (String line : currentList) {
-
-            System.out.printf("|%.30s|\n",line);
+            String[] parts = line.split("\\|");
+            System.out.printf("|%-20s|%-15s|\n",parts[0], parts[1]);
         }
     }
 
